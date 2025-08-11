@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Le jeu qu'on joue à deux 💌</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff0f6;
+      color: #4a2c40;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1rem;
+    }
+    .container {
+      background: #fff;
+      padding: 2rem 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(74, 44, 64, 0.2);
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: #ad4261;
+    }
+    label {
+      font-weight: 600;
+      margin-top: 1rem;
+      display: block;
+    }
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border-radius: 6px;
+      border: 1px solid #d1a1b7;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+    }
+    textarea {
+      min-height: 60px;
+    }
+    button {
+      margin-top: 1.8rem;
+      width: 100%;
+      padding: 0.7rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: #ad4261;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #8e3751;
+    }
+    .result {
+      margin-top: 1.5rem;
+      background: #fde4eb;
+      border-radius: 12px;
+      padding: 1rem;
+      color: #7a2440;
+      font-style: italic;
+      white-space: pre-line;
+    }
+    .fun-emoji {
+      font-size: 1.3rem;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Le jeu qu'on joue à deux 💌</h1>
+    <form id="quizForm">
+      <label for="moment">1. Si tu pouvais revivre un moment avec moi… lequel tu choisirais ? 🕰️</label>
+      <textarea id="moment" name="moment" required placeholder="Écris ton souvenir ici..."></textarea>
+
+      <label for="souvenir">2. Devine mon souvenir préféré de nous deux 😏</label>
+      <select id="souvenir" name="souvenir" required>
+        <option value="" disabled selected>Choisis une option</option>
+        <option value="notre premier rendez-vous">Notre premier rendez-vous</option>
+        <option value="notre voyage surprise">Notre voyage surprise</option>
+        <option value="nos soirées à rire jusqu’à tard">Nos soirées à rire jusqu’à tard</option>
+        <option value="autre">Autre</option>
+      </select>
+
+      <label for="complète">3. Complète : "Tu es la seule personne avec qui je peux..." ❤️</label>
+      <input type="text" id="complète" name="complète" required placeholder="Ta réponse ici..." />
+
+      <label>4. Entre nous… qui est le plus drôle ? 🤭</label>
+      <select id="drôle" name="drôle" required>
+        <option value="" disabled selected>Choisis une option</option>
+        <option value="toi">Toi</option>
+        <option value="moi">Moi</option>
+        <option value="nous deux">Nous deux</option>
+        <option value="personne">Personne</option>
+      </select>
+
+      <label for="superpouvoir">5. Si on avait un superpouvoir pour une journée, lequel on prendrait et pourquoi ? 🦸‍♀️🦸‍♂️</label>
+      <textarea id="superpouvoir" name="superpouvoir" required placeholder="Dis-moi tout..."></textarea>
+
+      <label for="endroit">6. Le premier endroit où tu voudrais qu’on aille si on repartait à zéro ? 🌍</label>
+      <input type="text" id="endroit" name="endroit" required placeholder="Ton lieu de rêve..." />
+
+      <label for="vraiFaux">7. Vrai ou faux : tu souris en lisant ça 😉</label>
+      <select id="vraiFaux" name="vraiFaux" required>
+        <option value="" disabled selected>Choisis une option</option>
+        <option value="vrai">Vrai</option>
+        <option value="faux">Faux</option>
+      </select>
+
+      <button type="submit">Voir nos réponses 💖</button>
+    </form>
+
+    <div class="result" id="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const moment = e.target.moment.value.trim();
+      const souvenir = e.target.souvenir.value;
+      const complete = e.target['complète'].value.trim();
+      const drole = e.target.drole.value || e.target.drôle.value; // fallback for typo
+      const superpouvoir = e.target.superpouvoir.value.trim();
+      const endroit = e.target.endroit.value.trim();
+      const vraiFaux = e.target.vraiFaux.value;
+
+      // Générer un message fun et romantique
+      const message = `
+Merci d'avoir joué ! 💖
+
+Voici ce que j'ai appris de toi :
+
+- Tu voudrais revivre : "${moment}"
+- Tu penses que mon souvenir préféré est : "${souvenir}"
+- Pour toi, je suis la seule personne avec qui tu peux : "${complete}"
+- Le plus drôle entre nous est : "${drole}"
+- Notre superpouvoir idéal serait : "${superpouvoir}"
+- Le premier endroit où tu voudrais qu’on aille : "${endroit}"
+- Et surtout, c’est ${vraiFaux === 'vrai' ? 'vrai' : 'faux'}, tu souris en lisant ça 😉 ${vraiFaux === 'vrai' ? 'Ça me fait chaud au cœur !' : 'Je vais devoir travailler à te faire sourire plus souvent 😄'}
+      
+J’ai hâte de partager encore plein de moments comme ça avec toi... 🌹
+      `;
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = message.trim();
+      resultDiv.style.display = 'block';
+
+      // Scroll vers le résultat
+      resultDiv.scrollIntoView({behavior: "smooth"});
+    });
+  </script>
+</body>
+</html>
